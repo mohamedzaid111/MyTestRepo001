@@ -11,6 +11,19 @@ pipeline {
             }
         }
 
+	 stage('Restore') {
+            steps {
+		dotnet restore WebApplication1/WebApplication1.csproj
+            }
+        }
+
+	 stage('Build') {
+            steps {
+		dotnet build WebApplication1/WebApplication1.csproj
+            }
+        }
+
+
     }
 
     post {
