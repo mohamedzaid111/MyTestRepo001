@@ -1,4 +1,3 @@
-# Starter pipeline
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
@@ -14,6 +13,30 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
+    # Starter pipeline
+- task: DotNetCoreCLI@2
+  inputs:
+    azureSubscription: 'Azure subscription 1(8410e01a-795b-4ab8-811b-a11ec4eebb1c)'
+    command: 'restore'
+    projects: 'WebApplication1/WebApplication1.csproj'
+    feedsToUse: 'select'
+    vstsFeed: 'fc9098a5-0fc7-4076-b79b-00a782bb9b65'
+- task: DotNetCoreCLI@2
+  inputs:
+    azureSubscription: 'Azure subscription 1(2)(8410e01a-795b-4ab8-811b-a11ec4eebb1c)'
+    command: 'build'
+    projects: 'WebApplication1/WebApplication1.csproj'
+    arguments: '--configuration Release'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    azureSubscription: 'Azure subscription 1(1)(8410e01a-795b-4ab8-811b-a11ec4eebb1c)'
+    command: 'test'
+    projects: 'WebApplication1/WebApplication1.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    azureSubscription: 'Azure subscription 1(1)(8410e01a-795b-4ab8-811b-a11ec4eebb1c)'
+    command: 'publish'
+    publishWebProjects: true
   displayName: 'Run a multi-line script'
