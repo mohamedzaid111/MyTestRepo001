@@ -14,6 +14,13 @@ steps:
 
 - script: |
     # Starter pipeline
+
+- task: UseDotNet@2
+  displayName: 'Install .NET SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'
+
 - task: DotNetCoreCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(8410e01a-795b-4ab8-811b-a11ec4eebb1c)'
