@@ -11,27 +11,27 @@ pipeline {
             }
         }
 
+
         stage('Build') {
-            steps {
-                sh 'find . -name "*.sln"'
+          steps {
+          bat 'dir /s /b *.sln'
 
-                dir('WebApplication1') {
-                    sh 'dotnet restore'
-                    sh 'dotnet build --configuration Release'
-                }
-            }
+             dir('WebApplication1') {
+               bat 'dotnet restore'
+               bat 'dotnet build --configuration Release'
+          }
+    }
+   }
+
+       stage('Run Unit Tests') {
+          steps {
+          bat 'dir /s /b *.sln'
+
+            dir('WebApplication1') {
+            bat 'dotnet test --configuration Release --no-build'
         }
-
-        stage('Run Unit Tests') {
-            steps {
-                sh 'find . -name "*.sln"'
-
-                dir('WebApplication1') {
-                    sh 'dotnet test --configuration Release --no-build'
-                }
-
-            }
-        }
+    }
+   }
 
 
     }
