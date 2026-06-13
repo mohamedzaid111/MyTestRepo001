@@ -1,5 +1,12 @@
 pipeline {
     agent any
+	
+	 environment {
+
+        PUBLISH_DIR = "${WORKSPACE}\\publish"
+        IIS_SITE_PATH = "C:\\inetpub\\wwwroot\\WebApplication1"
+        APP_POOL_NAME = "WebApplication1" 
+    }
 
     stages {
 
@@ -32,6 +39,31 @@ pipeline {
         }
     }
    }
+   
+       stage('Publish Application') {
+            steps {
+                dir('WebApplication1') {
+
+                    bat 'if exist "%PUBLISH_DIR%" rd /s /q "%PUBLISH_DIR%"'
+                    bat 'dotnet publish --configuration Release --output "%PUBLISH_DIR%"'
+                }
+            }
+        }
+		
+	    stage('Deploy to local IIS') {
+            steps {
+                bat """
+                    echo "Stopping IIS App Pool..."
+                    %SystemRoot%\\System32\\inetsrv\\appcmd.exe stop apppool /apppool.name:"${APP_POOL_NAME}"
+                    
+                    echo "Deploying files to IIS directory..."
+                    xcopy "%PUBLISH_DIR%\\*" "${IIS_SITE_PATH}\\" /E /Y /I
+                    
+                    echo "Starting IIS App Pool..."
+                    %SystemRoot%\\System32\\inetsrv\\appcmd.exe start apppool /apppool.name:"${APP_POOL_NAME}"
+                """
+            }
+        }
 
 
     }
