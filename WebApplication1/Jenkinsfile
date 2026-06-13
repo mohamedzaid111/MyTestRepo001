@@ -35,19 +35,4 @@ pipeline {
 
 
     }
-
-    post {
-
-        success {
-            echo 'CI Pipeline completed successfully'
-        }
-
-        failure {
-            echo 'Pipeline failed'
-        }
-
-        always {
-            sh 'docker image prune -f'
-        }
-    }
 }
